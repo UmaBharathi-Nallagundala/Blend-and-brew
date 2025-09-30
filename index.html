@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blend and Brew - Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            border-bottom: 4px solid #d4a574;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 8px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1em;
+            opacity: 0.85;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .category-nav {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .search-container {
+            flex: 1;
+        }
+        
+        .category-container {
+            flex: 1;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #1a1a1a;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #d4a574;
+        }
+        
+        .search-input::placeholder {
+            color: #999;
+        }
+        
+        .category-nav label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .category-select {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        .category-select:hover {
+            border-color: #d4a574;
+        }
+        
+        .category-select:focus {
+            outline: none;
+            border-color: #d4a574;
+        }
+        
+        .menu-content {
+            padding: 40px 30px;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            font-size: 1.6em;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #d4a574;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        
+        .category-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: padding-left 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            padding-left: 10px;
+        }
+        
+        .menu-item.hidden {
+            display: none;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-style: italic;
+            display: none;
+        }
+        
+        .no-results.show {
+            display: block;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-size: 1.05em;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+        
+        .item-description {
+            font-size: 0.9em;
+            color: #777;
+            line-height: 1.5;
+        }
+        
+        .item-price {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #d4a574;
+            margin-left: 20px;
+            white-space: nowrap;
+        }
+        
+        .footer {
+            background: #1a1a1a;
+            padding: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            border-top: 4px solid #d4a574;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .nav-controls {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .menu-content {
+                padding: 30px 20px;
+            }
+            
+            .category-title {
+                font-size: 1.4em;
+            }
+            
+            .menu-item {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+            
+            .item-price {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BLEND AND BREW</h1>
+            <p>Fresh & Healthy Options</p>
+        </div>
+        
+        <div class="category-nav">
+            <div class="nav-controls">
+                <div class="search-container">
+                    <label for="searchInput">Search Menu:</label>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search items..."
+                        oninput="searchMenu(this.value)"
+                    >
+                </div>
+                <div class="category-container">
+                    <label for="categorySelect">Category:</label>
+                    <select id="categorySelect" class="category-select" onchange="scrollToCategory(this.value)">
+                        <option value="">Select a category...</option>
+                        <option value="beverages">Beverages</option>
+                        <option value="smoothies">Smoothies</option>
+                        <option value="vegetable-juice">Vegetable Juice</option>
+                        <option value="fruit-juice">Fruit Juice</option>
+                        <option value="health-shots">Health Shots</option>
+                        <option value="fruit-salad">Fresh Fruit Salad</option>
+                        <option value="protein-bars">Protein & Healthy Bars</option>
+                        <option value="quart">Quart Size</option>
+                        <option value="acai-bowls">Acai Bowls</option>
+                        <option value="house-specials">House Specials</option>
+                        <option value="frosty">Frosty</option>
+                        <option value="yogurt-parfait">Yogurt Parfait</option>
+                        <option value="pre-workouts">Pre Workouts</option>
+                        <option value="salads">Salads</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-content">
+            <div class="no-results" id="noResults">
+                No items found. Try a different search term.
+            </div>
+            <!-- Beverages -->
+            <div class="category" id="beverages">
+                <h2 class="category-title">Beverages</h2>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Poland Spring Water</div>
+                        <div class="item-description">16.9 Oz Bottle</div>
+                    </div>
+                    <div class="item-price">$1.50</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Red Bull</div>
+                        <div class="item-description">8.4 Ounces. Available in regular or sugar-free</div>
+                    </div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Vitamin Water</div>
+                    </div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Smart Water</div>
+                    </div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fuji</div>
+                    </div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Essential Water Large</div>
+                    </div>
+                    <div class="item-price">$4.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fig Bar</div>
+                        <div class="item-description">Nature's bakery - no high fructose corn syrup or trans fat, dairy free</div>
+                    </div>
+                    <div class="item-price">$2.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Trident Gum</div>
+                    </div>
+                    <div class="item-price">$2.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Orbit Gum</div>
+                    </div>
+                    <div class="item-price">$2.00</div>
+                </div>
+            </div>
+
+            <!-- Smoothies -->
+            <div class="category" id="smoothies">
+                <h2 class="category-title">Smoothies</h2>
+                <p class="category-description">Served with low-fat yogurt and skim milk or soy milk</p>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Mango Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Banana Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Papaya Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Cantaloupe Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Strawberry Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Mango And Banana Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Mango And Strawberry Smoothie</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Acai Smoothie</div>
+                        <div class="item-description">Organic Acai blended with Strawberry, blueberry, and banana with choice of milk</div>
+                    </div>
+                    <div class="item-price">$9.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Dates Smoothie</div>
+                        <div class="item-description">Dates blended with low-fat yogurt with your choice of milk</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fresh Pina Colada</div>
+                        <div class="item-description">Made with pineapple, orange, coconut cream and coconut water</div>
+                    </div>
+                    <div class="item-price">$8.95</div>
+                </div>
+            </div>
+
+            <!-- Vegetable Juice -->
+            <div class="category" id="vegetable-juice">
+                <h2 class="category-title">Vegetable Juice</h2>
+                <p class="category-description">Fresh pressed 16oz</p>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot And Apple Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot And Orange Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Beet And Apple Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Beet And Celery Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Beet And Parsley Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Apple And Spinach Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Beet And Cucumber Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Apple And Celery Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Carrot, Kale And Parsley Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Vegetable Mixed With Carrot Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Vegetable Mixed Without Carrot Juice</div></div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">House Especial Veggie Juice</div>
+                        <div class="item-description">Kale, spinach, parsley, celery, cucumber, apple, pineapple, ginger</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+            </div>
+
+            <!-- Fruit Juice -->
+            <div class="category" id="fruit-juice">
+                <h2 class="category-title">Fruit Juice</h2>
+                <p class="category-description">Fresh pressed 16oz</p>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Grapefruit Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Orange Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Apple And Pear Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Apple And Strawberry Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Orange, Blueberry And Strawberry Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Pineapple, Banana And Strawberry Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Papaya, Orange And Banana Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Papaya, Orange And Strawberry Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Papaya, Apple And Pear Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Mango, Orange And Banana Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Mango, Orange And Strawberry Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Mango And Orange Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Orange, Banana And Pineapple Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Fruit Mixed Juice</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+            </div>
+
+            <!-- Health Shots -->
+            <div class="category" id="health-shots">
+                <h2 class="category-title">Health Shots</h2>
+                <p class="category-description">Powerful 4oz shots</p>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Ginger Shot</div></div>
+                    <div class="item-price">$6.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Cold Killer Shot</div>
+                        <div class="item-description">Ginger, lemon and cayenne pepper</div>
+                    </div>
+                    <div class="item-price">$6.99</div>
+                </div>
+            </div>
+
+            <!-- Fresh Fruit Salad -->
+            <div class="category" id="fruit-salad">
+                <h2 class="category-title">Fresh Fruit Salad</h2>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Assorted Fruit Salad</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+            </div>
+
+            <!-- Protein and Healthy Bars -->
+            <div class="category" id="protein-bars">
+                <h2 class="category-title">Protein & Healthy Bars</h2>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Kind Bar</div></div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Quest Bar</div></div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Power Crunch Bar</div></div>
+                    <div class="item-price">$4.06</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Luna Bar</div></div>
+                    <div class="item-price">$3.19</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Rx Bar</div></div>
+                    <div class="item-price">$3.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Clif Bar</div></div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Pure Protein Bar</div></div>
+                    <div class="item-price">$2.50</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Nature Valley Bar</div></div>
+                    <div class="item-price">$1.75</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Popcorn Chips</div></div>
+                    <div class="item-price">$2.32</div>
+                </div>
+            </div>
+
+            <!-- Quart -->
+            <div class="category" id="quart">
+                <h2 class="category-title">Quart Size</h2>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Quart Carrot</div></div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Quart Orange</div></div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Quart All Mix</div></div>
+                    <div class="item-price">$15.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Quart Vegetable Mix Without Carrot</div></div>
+                    <div class="item-price">$15.00</div>
+                </div>
+            </div>
+
+            <!-- Acai Bowl -->
+            <div class="category" id="acai-bowls">
+                <h2 class="category-title">Acai Bowls</h2>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Tropical Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with mango, banana and almond milk. Topped with granola, coconut, mango and banana</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Hearty Healthy Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with apple, banana and almond milk. Topped with granola, banana and blueberry</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Green Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with spinach, kale, banana, strawberry and almond milk. Topped with granola, strawberry and banana</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Creamy Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with yogurt, banana, strawberry, blueberry & almond milk. Topped with granola, strawberry, blueberry & banana</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Acai Power Bowl</div>
+                        <div class="item-description">Organic acai mixed with banana, whey protein, peanut butter & almond milk. Topped with granola, banana, strawberry & peanuts</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Almond Bliss Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with banana, strawberry, almond butter & almond milk. Topped with granola, pineapple, mango, flax seeds & almonds</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Coco Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with coconut, pineapple, kiwi & almond milk. Topped with granola, kiwi, strawberry, pineapple, chia seeds and coconut</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Coconut Acai Bowl</div>
+                        <div class="item-description">Acai coconut cream, banana, strawberry, almond milk. Topped with granola, chia seeds, pineapple, strawberry, coconut flakes</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Peanut Butter Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with banana, strawberry, peanut butter and almond milk. Topped with granola, strawberry, peanut butter and banana</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Nutella Acai Energy Bowl</div>
+                        <div class="item-description">Organic acai blended with banana, strawberry, nutella and almond milk. Topped with banana, strawberry, nutella, granola, chocolate chips</div>
+                    </div>
+                    <div class="item-price">$15.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Avocado Acai Bowl</div>
+                        <div class="item-description">Organic acai blended with avocado, strawberry, blueberry, banana and almond milk. Topped with granola, strawberry, blueberry, banana, coconut flakes and chia seed</div>
+                    </div>
+                    <div class="item-price">$15.00</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Acai Berry Bowl</div>
+                        <div class="item-description">Organic acai blended with strawberry, blueberry, banana, almond milk. Topped with granola, banana, strawberry</div>
+                    </div>
+                    <div class="item-price">$13.00</div>
+                </div>
+            </div>
+
+            <!-- House Specials -->
+            <div class="category" id="house-specials">
+                <h2 class="category-title">House Specials</h2>
+                <p class="category-description">Signature 16oz blends</p>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fresh Celery Juice</div>
+                        <div class="item-description">Lower your blood sugar with fresh squeeze celery juice</div>
+                    </div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">The Hangover Juice</div>
+                        <div class="item-description">Spinach, apple, ginger, lemon and kiwi</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">The Muscle Juice</div>
+                        <div class="item-description">Banana, peanut butter, almonds, fat free milk, whey protein</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Cold Buster Juice</div>
+                        <div class="item-description">Orange, lemon, grapefruit, pineapple and ginger</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">The Green Juice</div>
+                        <div class="item-description">Apple, cucumber, celery, kale, lemon and ginger</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">The Skinny Weight Loss Juice</div>
+                        <div class="item-description">Pineapple, beet, orange, carrot, spinach and lemon</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">The Energizer Juice</div>
+                        <div class="item-description">Kale, parsley, orange, pineapple and lemon</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Stress Free Juice</div>
+                        <div class="item-description">Spinach, broccoli, celery and carrot</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Digestion Juice</div>
+                        <div class="item-description">Papaya, apple, lemon, kale and ginger</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Detox Juice</div>
+                        <div class="item-description">Apple, blueberry, grapefruit and grapes</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Berry Blast Juice</div>
+                        <div class="item-description">Blueberry, strawberry, raspberry and apple</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Asthma Juice</div>
+                        <div class="item-description">Carrot, celery and grapefruit</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Constipation Juice</div>
+                        <div class="item-description">Carrot, spinach, apple, cabbage and beet</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Diabetes Juice</div>
+                        <div class="item-description">Carrot, celery and parsley</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Headache Juice</div>
+                        <div class="item-description">Carrot, spinach, apple, cabbage and beet</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Hypertension Juice</div>
+                        <div class="item-description">Carrot, beet, spinach, pineapple and papaya</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fatigue Juice</div>
+                        <div class="item-description">Carrot, spinach or orange, lemon and grapefruit</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Kidney Stones Juice</div>
+                        <div class="item-description">Carrot, beets and celery</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Fat Burner Juice</div>
+                        <div class="item-description">Spinach, apple and grapefruit</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Metabolism Shake</div>
+                        <div class="item-description">Spinach, mango, banana, almond milk and coconut oil</div>
+                    </div>
+                    <div class="item-price">$8.99</div>
+                </div>
+            </div>
+
+            <!-- Frosty -->
+            <div class="category" id="frosty">
+                <h2 class="category-title">Frosty</h2>
+                <p class="category-description">Fresh fruit blended with ice</p>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Peach, Banana And Apple Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Cantaloupe, Banana And Blueberry Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Blueberry, Banana, Strawberry And Honeydew Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Strawberry, Banana And Kiwi Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Strawberry, Banana And Papaya Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Strawberry And Banana Frosty</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+            </div>
+
+            <!-- Yogurt Parfait -->
+            <div class="category" id="yogurt-parfait">
+                <h2 class="category-title">Yogurt Parfait</h2>
+                <p class="category-description">Made from fresh fruits layered with low-fat yogurt</p>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Mango, Strawberry And Granola Parfait</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Blueberry, Raspberry And Granola Parfait</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Strawberry, Blueberry, Granola And Honey Parfait</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info"><div class="item-name">Kiwi, Strawberry, Granola And Honey Parfait</div></div>
+                    <div class="item-price">$7.99</div>
+                </div>
+            </div>
+
+            <!-- Pre Workouts -->
+            <div class="category" id="pre-workouts">
+                <h2 class="category-title">Pre Workouts</h2>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Pre-Workout Shake (24 Oz)</div>
+                        <div class="item-description">Banana, peanut butter, unsweetened almond milk, 24g whey protein, and C4</div>
+                    </div>
+                    <div class="item-price">$12.00</div>
+                </div>
+            </div>
+
+            <!-- Salads -->
+            <div class="category" id="salads">
+                <h2 class="category-title">Salads</h2>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Hummus</div>
+                        <div class="item-description">Blended chickpeas with tahini, garlic, salt, and cumin</div>
+                    </div>
+                    <div class="item-price">$7.99</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">Tabbouleh</div>
+                        <div class="item-description">Chopped parsley, tomato, onion or scallion, fresh pepper. Salt and lemon added</div>
+                    </div>
+                    <div class="item-price">$7.99</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Fresh • Healthy • Delicious</p>
+            <p style="margin-top: 10px;">Thank you for choosing Blend and Brew</p>
+        </div>
+    </div>
+    
+    <script>
+        function scrollToCategory(categoryId) {
+            // Clear search when using dropdown
+            document.getElementById('searchInput').value = '';
+            searchMenu('');
+            
+            if (categoryId) {
+                const element = document.getElementById(categoryId);
+                if (element) {
+                    const offset = 150;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        }
+        
+        function searchMenu(searchTerm) {
+            const items = document.querySelectorAll('.menu-item');
+            const categories = document.querySelectorAll('.category');
+            const noResults = document.getElementById('noResults');
+            const term = searchTerm.toLowerCase().trim();
+            let hasResults = false;
+            
+            if (term === '') {
+                // Show all items and categories
+                items.forEach(item => item.classList.remove('hidden'));
+                categories.forEach(cat => cat.style.display = 'block');
+                noResults.classList.remove('show');
+                return;
+            }
+            
+            // Search through items
+            items.forEach(item => {
+                const itemName = item.querySelector('.item-name')?.textContent.toLowerCase() || '';
+                const itemDesc = item.querySelector('.item-description')?.textContent.toLowerCase() || '';
+                const matches = itemName.includes(term) || itemDesc.includes(term);
+                
+                if (matches) {
+                    item.classList.remove('hidden');
+                    hasResults = true;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Hide empty categories
+            categories.forEach(category => {
+                const visibleItems = category.querySelectorAll('.menu-item:not(.hidden)');
+                if (visibleItems.length === 0) {
+                    category.style.display = 'none';
+                } else {
+                    category.style.display = 'block';
+                }
+            });
+            
+            // Show/hide no results message
+            if (hasResults) {
+                noResults.classList.remove('show');
+            } else {
+                noResults.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
