@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code - Blend & Brew</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f8f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 60px 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        .qr-wrapper {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 30px 0;
+            border: 3px solid #c9a96e;
+        }
+
+        #qrcode {
+            display: inline-block;
+        }
+
+        .url {
+            color: #666;
+            font-size: 16px;
+            margin-top: 50px;
+            font-family: monospace;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .download-btn {
+            background: #000;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background: #333;
+        }
+
+        .print-btn {
+            background: white;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+        .print-btn:hover {
+            background: #000;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .buttons {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 30px;
+            }
+            h1 {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+            .qr-wrapper {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://i.ibb.co/placeholder-blend-brew-logo.png" alt="Blend & Brew">
+        </div>
+        <div class="subtitle">Scan to View Our Menu</div>
+
+        <div class="qr-wrapper">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="url">https://blendandbrew.netlify.app/</div>
+        
+        <div class="buttons">
+            <button class="download-btn" onclick="downloadQR()">Download</button>
+            <button class="print-btn" onclick="window.print()">Print</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        const url = "https://blendandbrew.netlify.app/";
+        
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: url,
+            width: 400,
+            height: 400,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'blend-and-brew-qr.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
