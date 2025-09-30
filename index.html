@@ -48,81 +48,6 @@
             text-transform: uppercase;
         }
         
-        .category-nav {
-            background: white;
-            padding: 20px 30px;
-            border-bottom: 1px solid #e0e0e0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .nav-controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .search-container {
-            flex: 1;
-        }
-        
-        .category-container {
-            flex: 1;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1em;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            color: #1a1a1a;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #d4a574;
-        }
-        
-        .search-input::placeholder {
-            color: #999;
-        }
-        
-        .category-nav label {
-            display: block;
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .category-select {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1em;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            color: #1a1a1a;
-            cursor: pointer;
-            transition: border-color 0.3s;
-            font-family: inherit;
-        }
-        
-        .category-select:hover {
-            border-color: #d4a574;
-        }
-        
-        .category-select:focus {
-            outline: none;
-            border-color: #d4a574;
-        }
-        
         .menu-content {
             padding: 40px 30px;
         }
@@ -160,22 +85,6 @@
         
         .menu-item:hover {
             padding-left: 10px;
-        }
-        
-        .menu-item.hidden {
-            display: none;
-        }
-        
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-            font-style: italic;
-            display: none;
-        }
-        
-        .no-results.show {
-            display: block;
         }
         
         .item-info {
@@ -218,11 +127,6 @@
         }
         
         @media (max-width: 600px) {
-            .nav-controls {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
             .header {
                 padding: 40px 20px;
             }
@@ -254,49 +158,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>BLEND AND BREW</h1>
+            <h1>BLEND & BREW</h1>
             <p>Fresh & Healthy Options</p>
-        </div>
-        
-        <div class="category-nav">
-            <div class="nav-controls">
-                <div class="search-container">
-                    <label for="searchInput">Search Menu:</label>
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="search-input" 
-                        placeholder="Search items..."
-                        oninput="searchMenu(this.value)"
-                    >
-                </div>
-                <div class="category-container">
-                    <label for="categorySelect">Category:</label>
-                    <select id="categorySelect" class="category-select" onchange="scrollToCategory(this.value)">
-                        <option value="">Select a category...</option>
-                        <option value="beverages">Beverages</option>
-                        <option value="smoothies">Smoothies</option>
-                        <option value="vegetable-juice">Vegetable Juice</option>
-                        <option value="fruit-juice">Fruit Juice</option>
-                        <option value="health-shots">Health Shots</option>
-                        <option value="fruit-salad">Fresh Fruit Salad</option>
-                        <option value="protein-bars">Protein & Healthy Bars</option>
-                        <option value="quart">Quart Size</option>
-                        <option value="acai-bowls">Acai Bowls</option>
-                        <option value="house-specials">House Specials</option>
-                        <option value="frosty">Frosty</option>
-                        <option value="yogurt-parfait">Yogurt Parfait</option>
-                        <option value="pre-workouts">Pre Workouts</option>
-                        <option value="salads">Salads</option>
-                    </select>
-                </div>
-            </div>
+            <p style="margin-top: 15px; font-size: 0.9em;">54 State St, Albany, NY 12207</p>
         </div>
         
         <div class="menu-content">
-            <div class="no-results" id="noResults">
-                No items found. Try a different search term.
-            </div>
             <!-- Beverages -->
             <div class="category" id="beverages">
                 <h2 class="category-title">Beverages</h2>
@@ -963,74 +830,5 @@
             <p style="margin-top: 10px;">Thank you for choosing Blend and Brew</p>
         </div>
     </div>
-    
-    <script>
-        function scrollToCategory(categoryId) {
-            // Clear search when using dropdown
-            document.getElementById('searchInput').value = '';
-            searchMenu('');
-            
-            if (categoryId) {
-                const element = document.getElementById(categoryId);
-                if (element) {
-                    const offset = 150;
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - offset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        }
-        
-        function searchMenu(searchTerm) {
-            const items = document.querySelectorAll('.menu-item');
-            const categories = document.querySelectorAll('.category');
-            const noResults = document.getElementById('noResults');
-            const term = searchTerm.toLowerCase().trim();
-            let hasResults = false;
-            
-            if (term === '') {
-                // Show all items and categories
-                items.forEach(item => item.classList.remove('hidden'));
-                categories.forEach(cat => cat.style.display = 'block');
-                noResults.classList.remove('show');
-                return;
-            }
-            
-            // Search through items
-            items.forEach(item => {
-                const itemName = item.querySelector('.item-name')?.textContent.toLowerCase() || '';
-                const itemDesc = item.querySelector('.item-description')?.textContent.toLowerCase() || '';
-                const matches = itemName.includes(term) || itemDesc.includes(term);
-                
-                if (matches) {
-                    item.classList.remove('hidden');
-                    hasResults = true;
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-            
-            // Hide empty categories
-            categories.forEach(category => {
-                const visibleItems = category.querySelectorAll('.menu-item:not(.hidden)');
-                if (visibleItems.length === 0) {
-                    category.style.display = 'none';
-                } else {
-                    category.style.display = 'block';
-                }
-            });
-            
-            // Show/hide no results message
-            if (hasResults) {
-                noResults.classList.remove('show');
-            } else {
-                noResults.classList.add('show');
-            }
-        }
-    </script>
 </body>
 </html>
