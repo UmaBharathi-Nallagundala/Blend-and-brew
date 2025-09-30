@@ -29,12 +29,17 @@
             text-align: center;
         }
 
-        h1 {
-            font-size: 48px;
-            color: #000;
+        .logo {
+            max-width: 500px;
+            width: 100%;
             margin-bottom: 20px;
-            font-weight: 400;
-            letter-spacing: 8px;
+            padding: 0;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .subtitle {
@@ -126,7 +131,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>BLEND AND BREW</h1>
+        <div class="logo">
+            <img src="https://i.ibb.co/placeholder-blend-brew-logo.png" alt="Blend & Brew">
+        </div>
         <div class="subtitle">Scan to View Our Menu</div>
 
         <div class="qr-wrapper">
